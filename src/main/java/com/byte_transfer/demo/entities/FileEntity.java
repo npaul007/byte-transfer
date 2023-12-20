@@ -13,6 +13,9 @@ public class FileEntity {
 
     private String fileName;
 
+    @Lob
+    private byte[] fileContent;
+
     public void setFileName(String fileName2) {
         this.fileName = fileName2;
     }
@@ -23,5 +26,13 @@ public class FileEntity {
 
     public String getFileName() {
         return this.fileName;
+    }
+
+    public void setFileContent(byte[] fileContent) {
+        this.fileContent = fileContent;
+    }
+
+    public byte[] getFileContent() {
+        return this.fileContent;
     }
 }

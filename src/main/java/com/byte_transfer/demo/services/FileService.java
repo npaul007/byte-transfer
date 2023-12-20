@@ -1,5 +1,7 @@
 package com.byte_transfer.demo.services;
 
+import java.io.IOException;
+
 // FileService.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,12 @@ public class FileService {
 
         FileEntity fileEntity = new FileEntity();
         fileEntity.setFileName(fileName);
+
+        try {
+            fileEntity.setFileContent(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return fileRepository.save(fileEntity);
     }
