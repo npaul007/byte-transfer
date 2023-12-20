@@ -21,7 +21,7 @@ public class FileEntity {
         return this.id;
     }
 
-    // Other fields as needed
-
-    // Getters and setters
+    public String getFileName() {
+        return this.fileName;
+    }
 }
