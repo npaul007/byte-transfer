@@ -15,14 +15,10 @@ public class FileService {
     private FileRepository fileRepository;
 
     public FileEntity saveFile(MultipartFile file) {
-        // Perform file saving logic here
-        // For simplicity, let's assume the file name is the original file name
         String fileName = file.getOriginalFilename();
 
         FileEntity fileEntity = new FileEntity();
         fileEntity.setFileName(fileName);
-
-        // Additional logic for saving file content to the database if needed
 
         return fileRepository.save(fileEntity);
     }

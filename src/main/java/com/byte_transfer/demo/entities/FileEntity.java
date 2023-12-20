@@ -16,6 +16,10 @@ public class FileEntity {
     public void setFileName(String fileName2) {
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     // Other fields as needed
 
     // Getters and setters
