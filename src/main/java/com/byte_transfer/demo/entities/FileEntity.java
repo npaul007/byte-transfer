@@ -14,6 +14,7 @@ public class FileEntity {
     private String fileName;
 
     public void setFileName(String fileName2) {
+        this.fileName = fileName2;
     }
 
     public Long getId() {
