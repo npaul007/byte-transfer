@@ -14,6 +14,7 @@ public class FileEntity {
     private String fileName;
 
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] fileContent;
 
     public void setFileName(String fileName2) {

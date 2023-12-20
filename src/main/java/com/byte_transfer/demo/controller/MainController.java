@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.byte_transfer.demo.entities.FileEntity;
 import com.byte_transfer.demo.services.FileService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequestMapping(value ="/", method=RequestMethod.GET)
 public class MainController {
 
+    @Autowired
     private FileService fileService;
 
     @GetMapping("")
@@ -33,6 +35,7 @@ public class MainController {
             return ResponseEntity.ok().body("{\"message\": \"The file has been uploaded successfully\",\"id\":" + savedFile.getId()+"}");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("{message:"+e.getMessage()+"}");
+            
         }
     }
 }
