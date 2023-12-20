@@ -1,7 +1,9 @@
 //fooo
 // Import necessary libraries
+import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { API_HOST } from "../../modules/constants";
 
 // Styled components
 const Container = styled.div`
@@ -35,10 +37,21 @@ export const HomePage: React.FC = () => {
     }
   };
 
-  const handleUpload = () => {
-    // Handle file upload logic here
-    console.log("File uploaded:", selectedFile);
-    // Implement cloud upload logic and state management
+  const handleUpload = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile || "");
+
+      const response = await axios.post(`${API_HOST}upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("File uploaded successfully:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
   };
 
   return (
