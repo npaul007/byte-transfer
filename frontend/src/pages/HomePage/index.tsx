@@ -4,6 +4,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { API_HOST } from "../../modules/constants";
+import { LoaderComponent } from "../../components";
+import { eq } from "lodash";
 
 // Styled components
 const Container = styled.div`
@@ -27,8 +29,18 @@ const FileInput = styled.input`
   display: none;
 `;
 
+enum RequestState {
+  IDLE,
+  PENDING,
+  RECEIVED,
+  ERROR,
+}
+
 export const HomePage: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [requestState, setRequestState] = useState<RequestState>(
+    RequestState.IDLE
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -42,6 +54,7 @@ export const HomePage: React.FC = () => {
       const formData = new FormData();
       formData.append("file", selectedFile || "");
 
+      setRequestState(RequestState.PENDING);
       const response = await axios.post(`${API_HOST}upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -49,8 +62,10 @@ export const HomePage: React.FC = () => {
       });
 
       console.log("File uploaded successfully:", response.data);
+      setRequestState(RequestState.RECEIVED);
     } catch (error) {
       console.error("Error uploading file:", error);
+      setRequestState(RequestState.ERROR);
     }
   };
 
@@ -65,6 +80,7 @@ export const HomePage: React.FC = () => {
         <div>
           <p>Selected File: {selectedFile.name}</p>
           <button onClick={handleUpload}>Start Upload</button>
+          {eq(RequestState.PENDING, requestState) && <LoaderComponent />}
         </div>
       )}
     </Container>
