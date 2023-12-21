@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { API_HOST } from "../../modules/constants";
 import { LoaderComponent } from "../../components";
-import { eq } from "lodash";
+import { eq, every, get } from "lodash";
 
 // Styled components
 const Container = styled.div`
@@ -41,6 +41,7 @@ export const HomePage: React.FC = () => {
   const [requestState, setRequestState] = useState<RequestState>(
     RequestState.IDLE
   );
+  const [downloadLink, setDownloadLink] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -61,7 +62,11 @@ export const HomePage: React.FC = () => {
         },
       });
 
-      console.log("File uploaded successfully:", response.data);
+      const fileId = get(response.data, "id", -1);
+      if (!eq(fileId, -1)) {
+        setDownloadLink(`${window.location.href}download/${fileId}`);
+      }
+
       setRequestState(RequestState.RECEIVED);
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -72,15 +77,33 @@ export const HomePage: React.FC = () => {
   return (
     <Container>
       <h1>Welcome to Byte-Transfer</h1>
-      <UploadButton>
-        Upload File
-        <FileInput type="file" onChange={handleFileChange} />
-      </UploadButton>
-      {selectedFile && (
+      {!eq(requestState, RequestState.RECEIVED) && (
+        <UploadButton>
+          Upload File
+          <FileInput type="file" onChange={handleFileChange} />
+        </UploadButton>
+      )}
+      {every([
+        selectedFile,
+        !eq(requestState, RequestState.PENDING),
+        !eq(requestState, RequestState.RECEIVED),
+      ]) && (
         <div>
-          <p>Selected File: {selectedFile.name}</p>
+          <p>Selected File: {selectedFile?.name}</p>
           <button onClick={handleUpload}>Start Upload</button>
-          {eq(RequestState.PENDING, requestState) && <LoaderComponent />}
+          <br />
+        </div>
+      )}
+      {eq(RequestState.PENDING, requestState) && <LoaderComponent />}
+
+      {every([
+        eq(requestState, RequestState.RECEIVED),
+        !eq(downloadLink, null),
+      ]) && (
+        <div>
+          <h3>File upload of {selectedFile?.name} successful</h3>
+          <a href={downloadLink as string}>Click here to download your file.</a>
+          <br />
         </div>
       )}
     </Container>

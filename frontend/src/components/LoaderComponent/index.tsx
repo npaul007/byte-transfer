@@ -16,7 +16,7 @@ const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  margin-top: 15px;
 `;
 
 // Styled component for the loader itself
