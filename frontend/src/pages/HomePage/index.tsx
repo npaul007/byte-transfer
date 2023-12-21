@@ -104,7 +104,8 @@ export const HomePage: React.FC = () => {
       ]) && (
         <div>
           <h3>File upload of {selectedFile?.name} successful</h3>
-          <a href={downloadLink as string}>Click here to download your file.</a>
+          Use this link to share your file:{" "}
+          <a href={downloadLink as string}>{downloadLink}</a>
           <br />
         </div>
       )}
