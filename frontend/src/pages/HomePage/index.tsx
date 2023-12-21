@@ -83,6 +83,7 @@ export const HomePage: React.FC = () => {
           <FileInput type="file" onChange={handleFileChange} />
         </UploadButton>
       )}
+
       {every([
         selectedFile,
         !eq(requestState, RequestState.PENDING),
@@ -94,6 +95,7 @@ export const HomePage: React.FC = () => {
           <br />
         </div>
       )}
+
       {eq(RequestState.PENDING, requestState) && <LoaderComponent />}
 
       {every([
@@ -104,6 +106,15 @@ export const HomePage: React.FC = () => {
           <h3>File upload of {selectedFile?.name} successful</h3>
           <a href={downloadLink as string}>Click here to download your file.</a>
           <br />
+        </div>
+      )}
+
+      {eq(requestState, RequestState.ERROR) && (
+        <div>
+          <p style={{ color: "red" }}>
+            Failed to upload file, please make sure it is less than 1048576
+            bytes
+          </p>
         </div>
       )}
     </Container>
