@@ -1,5 +1,7 @@
 package com.byte_transfer.demo.entities;
 
+import java.util.Date;
+
 // FileEntity.java
 import jakarta.persistence.*;
 
@@ -16,6 +18,16 @@ public class FileEntity {
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] fileContent;
+
+    private Date createdAt;
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public void setFileName(String fileName2) {
         this.fileName = fileName2;
@@ -36,4 +48,5 @@ public class FileEntity {
     public byte[] getFileContent() {
         return this.fileContent;
     }
+
 }

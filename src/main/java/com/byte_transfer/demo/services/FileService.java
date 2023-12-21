@@ -1,6 +1,7 @@
 package com.byte_transfer.demo.services;
 
 import java.io.IOException;
+import java.util.Date;
 
 // FileService.java
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+    public boolean isFileValid(MultipartFile file) {
+        return file != null && file.getSize() <= MAX_FILE_SIZE;
+    }
+
     public FileEntity saveFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
 
@@ -27,6 +34,9 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Date date = new Date();
+        fileEntity.setCreatedAt(date);
 
         return fileRepository.save(fileEntity);
     }

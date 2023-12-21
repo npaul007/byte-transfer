@@ -31,11 +31,14 @@ public class MainController {
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         try {
+            if(!fileService.isFileValid(file)) {
+                throw new Exception("File size of 10mb exceeded");
+            }
+            
             FileEntity savedFile = fileService.saveFile(file);
             return ResponseEntity.ok().body("{\"message\": \"The file has been uploaded successfully\",\"id\":" + savedFile.getId()+"}");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("{message:"+e.getMessage()+"}");
-            
         }
     }
 }
